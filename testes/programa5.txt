@@ -1,0 +1,8 @@
+programa teste ;
+var x : inteiro;
+var y : inteiro;
+var z : inteiro;
+inicio
+  x := y + z;
+  escreva(x);
+fim.

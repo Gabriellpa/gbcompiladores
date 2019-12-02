@@ -1,0 +1,11 @@
+PROGRAMA   - Error: Identificador t 4 Nao foi declarado Linha: 5
+PROGRAMA1  - CERTO
+PROGRAMA2  - Error: Identificador n 3 Nao foi declarado Linha: 5
+	     Error: Identificador t 4 Nao foi declarado Linha: 7
+PROGRAMA3  - Encountered " "inicio" "inicio "" at line 3, column 1.
+	     Was expecting one of:
+   	     ":=" ...
+    	     "var" ...
+ 	     ";" ...
+PROGRAMA4  - Error: Identificador y 3 Nao foi declarado Linha: 4
+PROGRAMA5  - CERTO

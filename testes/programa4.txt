@@ -1,0 +1,7 @@
+programa teste ;
+var x : inteiro;
+inicio
+  y := falso;
+  x := 3 + 1336;
+  escreva(x);
+fim.

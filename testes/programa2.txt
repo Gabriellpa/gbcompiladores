@@ -1,0 +1,8 @@
+programa teste ;
+var x : inteiro;
+var y : booleano;
+inicio
+  n := 5;
+  x := 3 + 1336;
+  escreva(t);
+fim.

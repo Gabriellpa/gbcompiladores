@@ -1,0 +1,279 @@
+PARSER_BEGIN(compilador)
+import java.io.*;
+class compilador
+{
+	public static void main( String[] args )throws ParseException, Exception
+	{
+		try
+		{
+     		compilador analizador = new compilador( System.in ) ;
+			analizador.Programa();
+			System.out.println("Fim");
+		}
+		catch(ParseException e)
+		{
+			System.out.println(e.getMessage());
+			System.out.println("Erro: ");
+		}
+	}
+}
+PARSER_END(compilador)
+
+TOKEN :
+{
+	  <ATRIBUICAO : ":=">
+	| <MAIS : "+" >
+	| <MENOS:"-">
+	| <MULT:"*">
+	| <DIV:"/">
+
+}
+TOKEN:
+{
+	 <PROGRAMA: "programa" >
+	|<INICIO :"inicio">
+	|<FIM :"fim">
+	|<ESCREVA : "escreva">
+	|<VAR : "var">
+
+}
+TOKEN:
+{
+      <FECHAPARENTESES: ")" >
+	| <ABREPARENTESES: "(" >
+	| <PONTO_VIRGULA: ";" >
+	| <VIRGULA: "," >
+	| <PONTO: "." >
+}
+
+TOKEN:
+{
+	  <INTEIRO:"inteiro">
+	| <BOOLEANO:"booleano">
+	| <NUMERO : (["0"-"9"])+>
+	| <VERDADEIRO :"verdadeiro">
+	| <FALSO :"falso">
+	| <IDENTIFICADOR : ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9","_"])*>
+	| <DOIS_PONTO : ":">
+}
+
+SKIP :
+{
+	" "|"\n" | "\r" | "\r\n" | "\t"
+}
+
+void Programa():
+{}
+{
+	<PROGRAMA><IDENTIFICADOR><PONTO_VIRGULA>Bloco()<EOF>
+}
+
+void Bloco():
+{}
+{
+	Declaracoes()Principal()
+}
+
+void Declaracoes():
+{}
+{
+	((DeclaraUmaVariavel())*<PONTO_VIRGULA>)*
+}
+
+
+void DeclaraUmaVariavel():
+{
+	int td;
+	Token var;
+}
+{
+	<VAR>
+	var = <IDENTIFICADOR>
+	<DOIS_PONTO>
+	(TiposDDados())
+	{
+		td = token.kind;
+		TokenSymTab.InserirSimbolo(var, td);
+	}
+	[VariaveisAtribuicao(var)]
+}
+
+void Tipo():
+{}
+{
+	<INTEIRO> | <BOOLEANO>
+}
+
+void Principal():
+{
+	TokenSymTab.SetTables();
+	
+}
+{
+	<INICIO>Sentencas()<FIM><PONTO>
+}
+
+
+void VariaveisLocais():
+{
+	int td;
+	Token var;
+}
+{
+(
+	(TiposDDados())
+	{
+		td = token.kind;
+	}
+	var = <IDENTIFICADOR>
+	{
+		TokenSymTab.InserirSimbolo(var, td);
+	}
+	[VariaveisAtribuicao(var)]
+	(
+		<VIRGULA>
+		var = <IDENTIFICADOR>
+		{
+			TokenSymTab.InserirSimbolo(var, td);
+		}
+		[VariaveisAtribuicao(var)]
+	)*
+	<PONTO_VIRGULA>
+)
+	(VS())
+}
+
+void VariaveisAtribuicao(Token v1):
+{
+	Token v2;
+	Token v3;
+	String res;
+	boolean imp = false;
+}
+{
+	<ATRIBUICAO>
+	(TiposAtribuicao())
+	  {
+		v2 = token;
+		res = TokenSymTab.checkAtrib(v1, v2, "c");
+
+		if(res != " ")
+		{
+			System.out.println(res);
+			imp = true;
+		}
+	  }
+	  (Operacao()
+	  TiposAtribuicao()
+	  {
+		v3 = token;
+		res = TokenSymTab.checkAtrib(v1, v3, "d");
+
+		if(res != " " && !imp)
+		{
+			System.out.println(res);
+		}
+	  })*
+}
+
+void VS():
+{}
+{
+	LOOKAHEAD(3)VariaveisLocais() | Sentencas()
+}
+
+void Sentencas():
+{}
+{
+	(
+	  VariaveisLocais()
+	| LOOKAHEAD(2)Atribuicao()<PONTO_VIRGULA>
+	| Escreva()
+	)*
+}
+
+int Operacao():
+{}
+{
+	  (<MAIS> {return 1;})
+	| (<MENOS> {return 1;})
+	| (<MULT> {return 1;})
+	| (<DIV> {return 1;})
+	| ({return 0;})
+
+	{return 0;}
+}
+
+void TiposDDados():
+{}
+{
+	 <INTEIRO>
+	|<BOOLEANO>
+}
+
+void Atribuicao():
+{
+	Token v1;
+	Token v2;
+	Token v3;
+	int aux;
+	String res;
+	boolean imp = false;	
+}
+{
+  v1 = <IDENTIFICADOR>
+  (<ATRIBUICAO>
+  (TiposAtribuicao())
+  {
+    v2 = token;
+	res = TokenSymTab.checkAtrib(v1, v2, "a");
+	
+	if(res != " ")
+	{		
+		imp = true;
+		System.out.println("\n" + res);
+	}
+  }	
+  (LOOKAHEAD(2)Operacao()
+  TiposAtribuicao()
+  {
+    v3 = token;
+	res = TokenSymTab.checkAtrib(v1, v3, "b");
+
+	if(res != " " && !imp)
+	{
+		System.out.println("Operacao\n" + res);
+	}
+  })*)
+
+}
+void TiposAtribuicao():
+{}
+{	  
+	 <VERDADEIRO>
+	| <FALSO>
+	| <NUMERO>
+	|<IDENTIFICADOR>
+}
+
+void Escreva():
+{
+	Token v1 = new Token();
+	String res;
+}
+{
+
+    <ESCREVA>
+	<ABREPARENTESES>
+	( v1 = <IDENTIFICADOR> | <NUMERO>)
+	{
+		res = TokenSymTab.checkExist(v1);
+
+		if(res != " ")
+		{
+			System.out.println(res);
+		}
+	}
+	<FECHAPARENTESES><PONTO_VIRGULA>
+}
+

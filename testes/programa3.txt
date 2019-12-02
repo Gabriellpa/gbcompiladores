@@ -1,0 +1,6 @@
+programa teste ;
+var x : booleano
+inicio
+  x := false;
+  escreva(x);
+fim.
