@@ -61,7 +61,9 @@ class compilador implements compiladorConstants {
   }
 
   static final public void DeclaraUmaVariavel() throws ParseException {int td;
-        Token var;
+        Token v1 = new Token();
+        Token v2 = new Token();
+        Token var = new Token();
     jj_consume_token(VAR);
     var = jj_consume_token(IDENTIFICADOR);
     jj_consume_token(DOIS_PONTO);
@@ -349,6 +351,7 @@ v3 = token;
   }
 
   static final public void Escreva() throws ParseException {Token v1 = new Token();
+        Token v2 = new Token();
         String res;
     jj_consume_token(ESCREVA);
     jj_consume_token(ABREPARENTESES);
@@ -358,7 +361,7 @@ v3 = token;
       break;
       }
     case NUMERO:{
-      jj_consume_token(NUMERO);
+      v2 = jj_consume_token(NUMERO);
       break;
       }
     default:
@@ -366,11 +369,13 @@ v3 = token;
       jj_consume_token(-1);
       throw new ParseException();
     }
-res = TokenSymTab.checkExist(v1);
+if(v1.image != null){
+                res = TokenSymTab.checkExist(v1);
 
-                if(res != " ")
-                {
-                        System.out.println(res);
+                        if(res != " ")
+                        {
+                                System.out.println(res);
+                        }
                 }
     jj_consume_token(FECHAPARENTESES);
     jj_consume_token(PONTO_VIRGULA);

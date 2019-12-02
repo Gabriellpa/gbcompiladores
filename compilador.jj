@@ -84,7 +84,9 @@ void Declaracoes():
 void DeclaraUmaVariavel():
 {
 	int td;
-	Token var;
+	Token v1 = new Token();
+	Token v2 = new Token();
+	Token var = new Token();
 }
 {
 	<VAR>
@@ -259,19 +261,22 @@ void TiposAtribuicao():
 void Escreva():
 {
 	Token v1 = new Token();
+	Token v2 = new Token();
 	String res;
 }
 {
 
     <ESCREVA>
 	<ABREPARENTESES>
-	( v1 = <IDENTIFICADOR> | <NUMERO>)
+	( v1 = <IDENTIFICADOR> | v2 = <NUMERO>)
 	{
+		if(v1.image != null){
 		res = TokenSymTab.checkExist(v1);
 
-		if(res != " ")
-		{
-			System.out.println(res);
+			if(res != " ")
+			{
+				System.out.println(res);
+			}
 		}
 	}
 	<FECHAPARENTESES><PONTO_VIRGULA>

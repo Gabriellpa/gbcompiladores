@@ -17,6 +17,7 @@ public class TokenSymTab
         {
 
             tipoIdent1 = (Integer)tabela.get(identificador.image);
+			System.out.println(tipoIdent1 + identificador.image);
         }
         catch(Exception e)
         {
