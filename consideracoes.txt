@@ -1,0 +1,2 @@
+Não foi implementada geração de código.
+Ficamos confusos em como gerar o código de máquina com linguagem LPD.
