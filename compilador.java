@@ -8,12 +8,12 @@ class compilador implements compiladorConstants {
                 {
                 compilador analizador = new compilador( System.in ) ;
                         analizador.Programa();
-                        System.out.println("Fim");
+                        System.out.println("Fim da compila\u00c3\u00a7\u00c3\u00a3o");
                 }
                 catch(ParseException e)
                 {
                         System.out.println(e.getMessage());
-                        System.out.println("Erro: ");
+                        System.out.println("Erro");
                 }
         }
 
@@ -304,7 +304,7 @@ v2 = token;
         if(res != " ")
         {
                 imp = true;
-                System.out.println("\u005cn" + res);
+                System.out.println(res);
         }
     label_6:
     while (true) {
@@ -320,7 +320,7 @@ v3 = token;
 
         if(res != " " && !imp)
         {
-                System.out.println("Operacao\u005cn" + res);
+                System.out.println(res);
         }
     }
   }
